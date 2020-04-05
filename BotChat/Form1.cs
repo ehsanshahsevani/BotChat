@@ -59,8 +59,10 @@ namespace BotChat
             #region Code My Bot ->
             while (true)
             {
-
+                //get update
                 var update = bot.GetUpdatesAsync(offset).Result;
+
+                //foreach for chekc all message & ...
                 foreach (var up in update)
                 {
 

@@ -22,12 +22,27 @@ namespace BotChat
 
         //token bot
         static string token = "1186610447:AAFLQrjCIqqSKqrtbDbSOkM60tGa-E33k7w";
+        static string constring = "";
+
+        static void DataBaseCheck()
+        {
+            System.Data.SqlClient.SqlConnectionStringBuilder conect = new System.Data.SqlClient.SqlConnectionStringBuilder();
+            conect.DataSource = "localhost";
+            conect.InitialCatalog = "chatBot";
+            conect.IntegratedSecurity = true;
+            constring = conect.ConnectionString;
+            ChatBotDataContext test = new ChatBotDataContext(constring);
+            if (test.DatabaseExists())
+                return;
+            test.CreateDatabase();
+        }
+        ChatBotDataContext botdb = new ChatBotDataContext(constring);
+
         //my bot
         Telegram.Bot.TelegramBotClient bot;
         //tread app
         Thread thb;
         //data base model
-        ChatBotEntities botdb = new ChatBotEntities();
 
         #region markup menu buttons
         InlineKeyboardMarkup mainmenue;
@@ -41,6 +56,7 @@ namespace BotChat
         {
             thb = new Thread(ChatBot);
             thb.Start();
+            DataBaseCheck();
         }
         #endregion
 

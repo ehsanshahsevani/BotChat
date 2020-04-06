@@ -14,6 +14,7 @@ namespace BotChat
 {
     public partial class Form1 : Form
     {
+        //counstructor
         public Form1()
         {
             InitializeComponent();
@@ -25,21 +26,23 @@ namespace BotChat
         Telegram.Bot.TelegramBotClient bot;
         //tread app
         Thread thb;
+        //data base model
+        ChatBotEntities botdb = new ChatBotEntities();
 
         #region markup menu buttons
         InlineKeyboardMarkup mainmenue;
         ReplyKeyboardMarkup selectname;
         #endregion
-
-        //data base model
-        ChatBotEntities botdb = new ChatBotEntities();
+        
 
         //load app and start thread
+        #region loding form
         private void Form1_Load(object sender, EventArgs e)
         {
             thb = new Thread(ChatBot);
             thb.Start();
         }
+        #endregion
 
         //closeing app and close thread
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -49,7 +52,6 @@ namespace BotChat
 
         void ChatBot()
         {
-
             bot = new Telegram.Bot.TelegramBotClient(token);
             //set offset for update message or ... bot
             int offset = 0;
@@ -85,7 +87,8 @@ namespace BotChat
                                 };
                             }
 
-                            string message = "✨ نام خود را وارد کنید ✨";
+                            string message = @"✨ نام خود را وارد کنید ✨
+📮 بعد از وارد کردن اسم کلیک کنید 📮";
                             bot.SendTextMessageAsync(chatidcall, message, Telegram.Bot.Types.Enums.ParseMode.Default, false, false, 0, getMenuName());
                         }
                     }
@@ -123,8 +126,10 @@ namespace BotChat
 
         }
 
-
         //function get button for start bot
+        #region Function Buttons
+
+
         InlineKeyboardMarkup GetMenuStart()
         {
             //creat keyboard nutton
@@ -142,13 +147,14 @@ namespace BotChat
         ReplyKeyboardMarkup getMenuName()
         {
             //creat inline keyboard button
-            KeyboardButton[][] row1 = new KeyboardButton[][]
+            KeyboardButton[][] allButtons = new KeyboardButton[][]
             {
                 //creat first inline button iin row 1
-                new KeyboardButton[]{new KeyboardButton("📮 بعد از وارد کردن اسم کلیک کنید 📮")}
+                new KeyboardButton[]{new KeyboardButton("📮 وارد کردم 📮")}
             };
             //set inline button in markup and return
-            return selectname = new ReplyKeyboardMarkup(row1);
+            return selectname = new ReplyKeyboardMarkup(allButtons);
         }
+        #endregion
     }
 }
